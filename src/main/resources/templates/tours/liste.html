@@ -2,6 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Liste des tours</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        h1 {
+            margin: 0 0 25px;
+            font-size: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        button {
+            display: inline-block;
+            padding: 9px 15px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.9rem;
+            background: #16a34a;
+            color: white;
+        }
+
+        form[action*="generer"] button {
+            background: #2563eb;
+            padding: 11px 17px;
+        }
+
+        form[action*="generer"] {
+            margin-top: 25px;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            margin-top: 20px;
+        }
+
+        @media(max-width: 700px) {
+
+            body {
+                padding: 15px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
 </head>
 <body>
 <h1>Tours de la tontine</h1>

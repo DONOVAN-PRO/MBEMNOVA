@@ -1,32 +1,145 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Liste des cotisations</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotisations - TontinePro</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a { color: white; text-decoration: none; margin-left: 15px; }
+
+        main { padding: 30px; }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .top h1 { margin: 0; font-size: 1.5rem; }
+        .sous-titre { color: #64748b; margin-top: 4px; font-size: 0.9rem; }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .btn-retour { background: #64748b; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td { padding: 14px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+        th { background: #1e3a8a; color: white; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-paye { background: #dcfce7; color: #15803d; }
+        .badge-retard { background: #fee2e2; color: #b91c1c; }
+
+        .vide { text-align: center; padding: 30px; color: #64748b; }
+        .bas-de-page { margin-top: 20px; display: flex; gap: 12px; }
+
+        @media(max-width: 700px) {
+            main { padding: 15px; }
+            table { display: block; overflow-x: auto; white-space: nowrap; }
+            .top { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
 </head>
 <body>
-<h1>Liste des cotisations</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Membre</th>
-        <th>Montant</th>
-        <th>Date de paiement</th>
-        <th>Cycle</th>
-        <th>Statut</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="cotisation : ${cotisations}">
-        <td th:text="${cotisation.membre.nom}"></td>
-        <td th:text="${cotisation.montant}"></td>
-        <td th:text="${cotisation.datePaiement}"></td>
-        <td th:text="${cotisation.cycle}"></td>
-        <td th:text="${cotisation.statut}"></td>
-    </tr>
-    </tbody>
-</table>
+<header>
+    <strong>TontinePro</strong>
+    <nav>
+        <a th:href="@{/dashboard}">Dashboard</a>
+        <a th:href="@{/tontines}">Tontines</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" style="background:none;border:none;color:white;text-decoration:underline;cursor:pointer;font:inherit;">Déconnexion</button>
+        </form>
+    </nav>
+</header>
 
-<a th:href="@{/tontines/{id}/cotisations/nouveau(id=${tontine.id})}">Nouvelle cotisation</a>
+<main>
+
+    <div class="top">
+        <div>
+            <h1>Cotisations</h1>
+            <div class="sous-titre" th:if="${tontine != null}" th:text="${tontine.nom}"></div>
+        </div>
+        <a class="btn" th:href="@{/tontines/{id}/cotisations/nouveau(id=${tontine.id})}">+ Nouvelle cotisation</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Membre</th>
+            <th>Montant</th>
+            <th>Date de paiement</th>
+            <th>Cycle</th>
+            <th>Statut</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cotisation : ${cotisations}">
+            <td th:text="${cotisation.membre.prenom} + ' ' + ${cotisation.membre.nom}"></td>
+            <td th:text="${cotisation.montant}"></td>
+            <td th:text="${cotisation.datePaiement} ?: '—'"></td>
+            <td th:text="${cotisation.cycle}"></td>
+            <td>
+                <span class="badge badge-paye" th:if="${cotisation.statut.name() == 'PAYE'}" th:text="${cotisation.statut}"></span>
+                <span class="badge badge-retard" th:unless="${cotisation.statut.name() == 'PAYE'}" th:text="${cotisation.statut}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p class="vide" th:if="${#lists.isEmpty(cotisations)}">Aucune cotisation enregistrée pour l'instant.</p>
+
+    <div class="bas-de-page">
+        <a class="btn btn-retour" th:href="@{/tontines/{id}(id=${tontine.id})}">&larr; Retour à la tontine</a>
+    </div>
+
+</main>
+
 </body>
 </html>
