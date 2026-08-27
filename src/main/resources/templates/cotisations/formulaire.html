@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nouvelle cotisation</title>
+</head>
+<body>
+<h1>Enregistrer une cotisation</h1>
+
+<form th:action="@{/tontines/{id}/cotisations(id=${tontine.id})}" th:object="${cotisationDTO}" method="post">
+    <label>Membre :</label>
+    <select th:field="*{membreId}">
+        <option th:each="m : ${membres}" th:value="${m.id}" th:text="${m.nom}"></option>
+    </select><br/>
+
+    <label>Montant :</label>
+    <input type="number" th:field="*{montant}" /><br/>
+
+    <label>Date de paiement :</label>
+    <input type="date" th:field="*{datePaiement}" /><br/>
+
+    <label>Cycle :</label>
+    <input type="number" th:field="*{cycle}" /><br/>
+
+    <label>Statut :</label>
+    <select th:field="*{statut}">
+        <option th:each="s : ${T(com.MBEMNOVA.Tontine.Entity.Cotisation.StatutCotisation).values()}"
+                th:value="${s}" th:text="${s}"></option>
+    </select><br/>
+
+    <button type="submit">Enregistrer</button>
+</form>
+</body>
+</html>

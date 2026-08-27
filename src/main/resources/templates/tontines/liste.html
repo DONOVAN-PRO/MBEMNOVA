@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Tontines - TontinePro</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.07);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .info {
+            margin: 8px 0;
+            color: #475569;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .actions a {
+            margin-right: 7px;
+            padding: 8px 12px;
+            border-radius: 7px;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+        }
+
+        .actions .delete {
+            background: #dc2626;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <strong>TontinePro</strong>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/membres">Membres</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" style="background:none;border:none;color:white;text-decoration:underline;cursor:pointer;font:inherit;">Déconnexion</button>
+        </form>
+    </nav>
+
+</header>
+
+<main>
+
+    <div class="top">
+
+        <div>
+
+            <h1>Mes tontines</h1>
+
+            <p>
+                Gestion de vos groupes d'épargne.
+            </p>
+
+        </div>
+
+        <a
+                class="btn"
+                href="/tontines/nouveau">
+
+            + Nouvelle tontine
+
+        </a>
+
+    </div>
+
+    <div class="grid">
+
+        <div
+                class="card"
+                th:each="tontine : ${tontines}">
+
+            <h2
+                    th:text="${tontine.nom}">
+                Tontine
+            </h2>
+
+            <p class="info">
+
+                Cotisation :
+                <strong
+                        th:text="${tontine.montantCotisation}">
+                    0
+                </strong>
+                FCFA
+
+            </p>
+
+            <p class="info">
+
+                Fréquence :
+                <strong
+                        th:text="${tontine.frequence}">
+                    MENSUELLE
+                </strong>
+
+            </p>
+
+            <p class="info">
+
+                Début :
+                <strong
+                        th:text="${tontine.dateDebut}">
+                    2026-08-27
+                </strong>
+
+            </p>
+
+            <span
+                    class="status"
+                    th:text="${tontine.statut}">
+                ACTIVE
+            </span>
+
+            <div class="actions">
+
+                <a
+                        th:href="@{/tontines/{id}(id=${tontine.id})}">
+                    Voir
+                </a>
+
+                <a
+                        th:href="@{/tontines/{id}/modifier(id=${tontine.id})}">
+                    Modifier
+                </a>
+
+                <form
+                        style="display:inline"
+                        th:action="@{/tontines/{id}/supprimer(id=${tontine.id})}"
+                        method="post">
+
+                    <button
+                            class="delete"
+                            style="border:0;color:white;padding:8px 12px;border-radius:7px"
+                            type="submit"
+                            onclick="return confirm('Supprimer cette tontine ?')">
+
+                        Supprimer
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

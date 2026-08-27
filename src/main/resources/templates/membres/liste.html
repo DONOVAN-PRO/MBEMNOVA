@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Membres - TontinePro</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit {
+            background: #f59e0b;
+            color: white;
+            padding: 7px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .delete {
+            background: #dc2626;
+            color: white;
+            padding: 7px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media(max-width: 700px) {
+
+            main {
+                padding: 15px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <strong>TontinePro</strong>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/tontines">Tontines</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" style="background:none;border:none;color:white;text-decoration:underline;cursor:pointer;font:inherit;">Déconnexion</button>
+        </form>
+    </nav>
+
+</header>
+
+<main>
+
+    <div class="top">
+
+        <div>
+            <h1>Liste des membres</h1>
+            <p>Gestion des membres de la plateforme.</p>
+        </div>
+
+        <a class="btn"
+           href="/membres/nouveau">
+            + Nouveau membre
+        </a>
+
+    </div>
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Date d'adhésion</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="membre : ${membres}">
+
+            <td th:text="${membre.id}">
+                1
+            </td>
+
+            <td th:text="${membre.nom}">
+                Nom
+            </td>
+
+            <td th:text="${membre.prenom}">
+                Prénom
+            </td>
+
+            <td th:text="${membre.email}">
+                email
+            </td>
+
+            <td th:text="${membre.telephone}">
+                téléphone
+            </td>
+
+            <td th:text="${membre.dateAdhesion}">
+                2026-08-27
+            </td>
+
+            <td th:text="${membre.statut}">
+                ACTIF
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <a class="edit"
+                       th:href="@{/membres/{id}/modifier(id=${membre.id})}">
+                        Modifier
+                    </a>
+
+                    <form
+                            th:action="@{/membres/{id}/supprimer(id=${membre.id})}"
+                            method="post">
+
+                        <button
+                                class="delete"
+                                type="submit"
+                                onclick="return confirm('Supprimer ce membre ?')">
+
+                            Supprimer
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(membres)}">
+
+            <td colspan="8"
+                style="text-align:center; padding:30px;">
+
+                Aucun membre enregistré.
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</main>
+
+</body>
+</html>

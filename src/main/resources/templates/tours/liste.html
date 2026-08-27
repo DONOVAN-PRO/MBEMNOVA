@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des tours</title>
+</head>
+<body>
+<h1>Tours de la tontine</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Cycle</th>
+        <th>Bénéficiaire</th>
+        <th>Date prévue</th>
+        <th>Statut</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tour : ${tours}">
+        <td th:text="${tour.numeroCycle}"></td>
+        <td th:text="${tour.membreBeneficiaire.prenom} + ' ' + ${tour.membreBeneficiaire.nom}"></td>
+        <td th:text="${tour.datePrevue}"></td>
+        <td th:text="${tour.statut}"></td>
+        <td>
+            <form th:if="${tour.statut.name() == 'A_VENIR'}"
+                  th:action="@{/tours/{id}/verser(id=${tour.id})}" method="post">
+                <button type="submit">Verser</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(tours)}">
+        <td colspan="5">Aucun tour généré pour l'instant.</td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/tontines/{id}/tours/generer(id=${tontineId})}" method="post">
+    <button type="submit">Générer le prochain tour</button>
+</form>
+
+<p><a th:href="@{/tontines/{id}(id=${tontineId})}">&larr; Retour à la tontine</a></p>
+</body>
+</html>

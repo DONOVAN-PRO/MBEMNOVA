@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Membre - TontinePro</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            color: #0f172a;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .error {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        button,
+        .cancel {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .cancel {
+            background: #64748b;
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>
+            <span th:if="${membreDTO.id == null}">
+                Nouveau membre
+            </span>
+
+            <span th:unless="${membreDTO.id == null}">
+                Modifier le membre
+            </span>
+        </h1>
+
+        <form
+                th:action="${membreDTO.id == null}
+                ? @{/membres}
+                : @{/membres/{id}/modifier(id=${membreDTO.id})}"
+                th:object="${membreDTO}"
+                method="post">
+
+            <div class="field">
+
+                <label>Nom</label>
+
+                <input
+                        type="text"
+                        th:field="*{nom}"
+                        placeholder="Nom">
+
+                <div
+                        class="error"
+                        th:if="${#fields.hasErrors('nom')}"
+                        th:errors="*{nom}">
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label>Prénom</label>
+
+                <input
+                        type="text"
+                        th:field="*{prenom}"
+                        placeholder="Prénom">
+
+                <div
+                        class="error"
+                        th:if="${#fields.hasErrors('prenom')}"
+                        th:errors="*{prenom}">
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label>Email</label>
+
+                <input
+                        type="email"
+                        th:field="*{email}"
+                        placeholder="exemple@email.com">
+
+                <div
+                        class="error"
+                        th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}">
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label>Téléphone</label>
+
+                <input
+                        type="text"
+                        th:field="*{telephone}"
+                        placeholder="+237 ...">
+
+                <div
+                        class="error"
+                        th:if="${#fields.hasErrors('telephone')}"
+                        th:errors="*{telephone}">
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label>Date d'adhésion</label>
+
+                <input
+                        type="date"
+                        th:field="*{dateAdhesion}">
+
+                <div
+                        class="error"
+                        th:if="${#fields.hasErrors('dateAdhesion')}"
+                        th:errors="*{dateAdhesion}">
+                </div>
+
+            </div>
+
+            <div class="field">
+
+                <label>Statut</label>
+
+                <select th:field="*{statut}">
+
+                    <option
+                            th:each="statut : ${T(com.MBEMNOVA.Tontine.Entity.Membre.StatutMembre).values()}"
+                            th:value="${statut}"
+                            th:text="${statut}">
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="buttons">
+
+                <button type="submit">
+                    Enregistrer
+                </button>
+
+                <a
+                        class="cancel"
+                        href="/membres">
+                    Annuler
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

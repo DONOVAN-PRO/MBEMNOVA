@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des cotisations</title>
+</head>
+<body>
+<h1>Liste des cotisations</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Membre</th>
+        <th>Montant</th>
+        <th>Date de paiement</th>
+        <th>Cycle</th>
+        <th>Statut</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cotisation : ${cotisations}">
+        <td th:text="${cotisation.membre.nom}"></td>
+        <td th:text="${cotisation.montant}"></td>
+        <td th:text="${cotisation.datePaiement}"></td>
+        <td th:text="${cotisation.cycle}"></td>
+        <td th:text="${cotisation.statut}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/tontines/{id}/cotisations/nouveau(id=${tontine.id})}">Nouvelle cotisation</a>
+</body>
+</html>

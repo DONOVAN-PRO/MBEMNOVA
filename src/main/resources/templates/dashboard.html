@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - TontinePro</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f1f5f9;
+
+            color: #0f172a;
+        }
+
+        header {
+            background: #1e3a8a;
+
+            color: white;
+
+            padding: 18px 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .user {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .user img {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+        }
+
+        .logout {
+            color: white;
+
+            text-decoration: none;
+
+            padding: 8px 14px;
+
+            border: 1px solid rgba(255,255,255,.5);
+
+            border-radius: 8px;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 8px;
+        }
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            box-shadow:
+                    0 5px 15px rgba(0,0,0,.06);
+        }
+
+        .card h3 {
+            color: #64748b;
+
+            font-size: 15px;
+        }
+
+        .value {
+            font-size: 32px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+        }
+
+        nav {
+            margin-top: 30px;
+        }
+
+        nav a {
+            display: inline-block;
+
+            padding: 12px 18px;
+
+            margin-right: 10px;
+
+            margin-bottom: 10px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: flex-start;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        TontinePro
+    </div>
+
+    <div class="user">
+
+        <img
+                th:if="${photoUtilisateur != null}"
+                th:src="${photoUtilisateur}"
+                alt="Photo">
+
+        <div>
+
+            <strong
+                    th:text="${nomUtilisateur}">
+                Utilisateur
+            </strong>
+
+            <br>
+
+            <small
+                    th:text="${emailUtilisateur}">
+                email
+            </small>
+
+        </div>
+
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="logout" style="background:none;font:inherit;cursor:pointer;">Déconnexion</button>
+        </form>
+
+    </div>
+
+</header>
+
+<main>
+
+    <section class="welcome">
+
+        <h1>
+            Tableau de bord
+        </h1>
+
+        <p>
+            Bienvenue dans votre espace de gestion TontinePro.
+        </p>
+
+    </section>
+
+    <section class="cards">
+
+        <div class="card">
+
+            <h3>
+                Nombre de tontines
+            </h3>
+
+            <div
+                    class="value"
+                    th:text="${nombreTontines}">
+                0
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h3>
+                Tontines actives
+            </h3>
+
+            <div
+                    class="value"
+                    th:text="${nombreTontinesActives}">
+                0
+            </div>
+
+        </div>
+
+    </section>
+
+    <nav>
+
+        <a href="/tontines">
+            Gérer les tontines
+        </a>
+
+        <a href="/membres">
+            Gérer les membres
+        </a>
+
+    </nav>
+
+</main>
+
+</body>
+
+</html>

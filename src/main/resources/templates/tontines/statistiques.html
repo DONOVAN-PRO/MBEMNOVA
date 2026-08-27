@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Statistiques - TontinePro</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #0f172a;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+
+        .card h3 {
+            color: #64748b;
+        }
+
+        .value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .positive {
+            color: green;
+            font-weight: bold;
+        }
+
+        .negative {
+            color: red;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>
+    Statistiques :
+    <span th:text="${tontine.nom}">
+        Tontine
+    </span>
+</h1>
+
+<div class="cards">
+
+    <div class="card">
+
+        <h3>Total collecté</h3>
+
+        <div class="value">
+
+            <span th:text="${totalCollecte}">
+                0
+            </span>
+
+            FCFA
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Cotisations</h3>
+
+        <div
+                class="value"
+                th:text="${nombreCotisations}">
+            0
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Retards</h3>
+
+        <div
+                class="value"
+                th:text="${nombreRetards}">
+            0
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Taux de retard</h3>
+
+        <div class="value">
+
+            <span
+                    th:text="${#numbers.formatDecimal(tauxRetard, 1, 2)}">
+                0.00
+            </span>
+
+            %
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<h2>Solde par membre</h2>
+
+<table>
+
+    <thead>
+
+    <tr>
+
+        <th>Membre</th>
+
+        <th>Total cotisé</th>
+
+        <th>Total reçu</th>
+
+        <th>Solde net</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr
+            th:each="stat : ${statistiquesMembres}">
+
+        <td
+                th:text="${stat.nomMembre}">
+            Membre
+        </td>
+
+        <td>
+
+            <span
+                    th:text="${stat.totalCotise}">
+                0
+            </span>
+
+            FCFA
+
+        </td>
+
+        <td>
+
+            <span
+                    th:text="${stat.totalRecu}">
+                0
+            </span>
+
+            FCFA
+
+        </td>
+
+        <td>
+
+            <span
+                    th:text="${stat.soldeNet}"
+                    th:classappend="${stat.soldeNet.compareTo(T(java.math.BigDecimal).ZERO) >= 0}
+                        ? 'positive'
+                        : 'negative'">
+
+                0
+
+            </span>
+
+            FCFA
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+
+<h2>Historique des tours</h2>
+
+<table>
+
+    <thead>
+
+    <tr>
+
+        <th>Cycle</th>
+
+        <th>Bénéficiaire</th>
+
+        <th>Date prévue</th>
+
+        <th>Statut</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr
+            th:each="tour : ${tours}">
+
+        <td
+                th:text="${tour.numeroCycle}">
+            1
+        </td>
+
+        <td
+                th:text="${tour.membreBeneficiaire.prenom
+                + ' '
+                + tour.membreBeneficiaire.nom}">
+            Membre
+        </td>
+
+        <td
+                th:text="${tour.datePrevue}">
+            2026-09-01
+        </td>
+
+        <td
+                th:text="${tour.statut}">
+            A_VENIR
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<a
+        class="btn"
+        th:href="@{/tontines/{id}(id=${tontine.id})}">
+
+    ← Retour à la tontine
+
+</a>
+
+</body>
+
+</html>
