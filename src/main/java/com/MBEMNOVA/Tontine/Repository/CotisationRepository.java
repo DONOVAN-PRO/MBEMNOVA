@@ -16,7 +16,6 @@ public interface CotisationRepository extends JpaRepository<Cotisation, Long> {
 
     List<Cotisation> findByTontineIdAndCycle(Long tontineId, Integer cycle);
 
-    // ✅ Une seule méthode pour filtrer par statut
     List<Cotisation> findByStatut(Cotisation.StatutCotisation statut);
 
     long countByTontineIdAndStatut(Long tontineId, Cotisation.StatutCotisation statut);
